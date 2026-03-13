@@ -14,14 +14,14 @@ const FILTERS = [
 
 function CardSkeleton() {
   return (
-    <div className="animate-pulse overflow-hidden rounded-lg bg-surface-card">
+    <div className="animate-pulse overflow-hidden rounded-primary bg-surface-card">
       <div className="aspect-[2/3] w-full bg-surface-border" />
       <div className="p-4">
         <div className="mb-2 h-4 w-3/4 rounded bg-surface-border" />
         <div className="mb-4 h-3 w-1/2 rounded bg-surface-border" />
         <div className="flex gap-2">
-          <div className="h-[38px] flex-1 rounded-md bg-surface-border" />
-          <div className="h-[38px] flex-1 rounded-md bg-surface-border" />
+          <div className="h-[38px] flex-1 rounded-primary bg-surface-border" />
+          <div className="h-[38px] flex-1 rounded-primary bg-surface-border" />
         </div>
       </div>
     </div>
@@ -57,7 +57,7 @@ export default function SearchPage() {
         </h1>
 
         {/* Search bar */}
-        <div className="mx-auto mb-12 flex h-14 max-w-[672px] items-center gap-3 rounded-lg bg-surface-input px-4">
+        <div className="mx-auto mb-12 flex h-14 max-w-[672px] items-center gap-3 rounded-primary bg-surface-input px-4">
           <Search size={20} className="shrink-0 text-text-secondary" />
           <input
             type="text"
@@ -134,7 +134,7 @@ export default function SearchPage() {
                     <button
                       onClick={() => fetchNextPage()}
                       disabled={isFetchingNextPage}
-                      className="flex h-12 w-[208px] items-center justify-center rounded-lg bg-surface-input text-base font-bold text-text-nav transition-colors hover:text-white disabled:opacity-60"
+                      className="flex h-12 w-[208px] items-center justify-center rounded-primary bg-surface-input text-base font-bold text-text-nav transition-colors hover:text-white disabled:opacity-60"
                     >
                       {isFetchingNextPage ? 'Loading…' : 'Load More Results'}
                     </button>

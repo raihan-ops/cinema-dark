@@ -25,13 +25,13 @@ export default class ErrorBoundary extends Component {
           <div className="mt-8 flex gap-3">
             <button
               onClick={() => window.location.reload()}
-              className="flex h-11 items-center rounded-lg border border-surface-border px-5 text-sm font-bold text-text-nav transition-colors hover:text-white"
+              className="flex h-11 items-center rounded-primary border border-surface-border px-5 text-sm font-bold text-text-nav transition-colors hover:text-white"
             >
               Refresh
             </button>
             <a
               href="/search"
-              className="flex h-11 items-center rounded-lg bg-primary px-6 text-sm font-bold text-white transition-colors hover:bg-primary-deep"
+              className="flex h-11 items-center rounded-primary bg-primary px-6 text-sm font-bold text-white transition-colors hover:bg-primary-deep"
             >
               Go Home
             </a>

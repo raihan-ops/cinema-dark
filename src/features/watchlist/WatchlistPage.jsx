@@ -52,7 +52,7 @@ export default function WatchlistPage() {
             </p>
             <Link
               to={ROUTES.SEARCH}
-              className="mt-8 flex h-11 items-center rounded-lg bg-primary px-6 text-sm font-bold text-white transition-colors hover:bg-primary-deep"
+              className="mt-8 flex h-11 items-center rounded-primary bg-primary px-6 text-sm font-bold text-white transition-colors hover:bg-primary-deep"
             >
               Browse Titles
             </Link>

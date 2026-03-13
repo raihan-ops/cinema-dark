@@ -31,17 +31,17 @@ function DetailSkeleton() {
       <div className="h-[480px] w-full bg-surface-elevated" />
       <div className="mx-auto max-w-[1280px] px-4 sm:px-8">
         <div className="-mt-[200px] flex flex-col gap-8 md:flex-row md:gap-10">
-          <div className="mx-auto h-[330px] w-[220px] shrink-0 rounded-xl bg-surface-input md:mx-0" />
+          <div className="mx-auto h-[330px] w-[220px] shrink-0 rounded-primary bg-surface-input md:mx-0" />
           <div className="flex-1 space-y-4 pt-0 md:pt-[120px]">
             <div className="h-9 w-1/2 rounded bg-surface-input" />
             <div className="h-4 w-1/3 rounded bg-surface-input" />
             <div className="h-4 w-2/3 rounded bg-surface-input" />
             <div className="mt-6 flex gap-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-[76px] w-24 rounded-lg bg-surface-input" />
+                <div key={i} className="h-[76px] w-24 rounded-primary bg-surface-input" />
               ))}
             </div>
-            <div className="h-11 w-44 rounded-lg bg-surface-input" />
+            <div className="h-11 w-44 rounded-primary bg-surface-input" />
           </div>
         </div>
         <div className="mt-12 space-y-3">
@@ -58,8 +58,8 @@ function DetailSkeleton() {
 function CastCard({ person }) {
   const photo = posterUrl(person.profile_path, 'w185')
   return (
-    <div className="w-[110px] shrink-0">
-      <div className="h-[150px] w-full overflow-hidden rounded-lg bg-surface-card">
+    <div className="w-27.5 shrink-0">
+      <div className="h-37.5 w-full overflow-hidden rounded-primary bg-surface-card">
         {photo ? (
           <img
             src={photo}
@@ -110,7 +110,7 @@ export default function MovieDetailPage() {
         </p>
         <button
           onClick={() => navigate(-1)}
-          className="mt-6 flex h-10 items-center gap-2 rounded-lg bg-primary px-5 text-sm font-bold text-white transition-colors hover:bg-primary-deep"
+          className="mt-6 flex h-10 items-center gap-2 rounded-primary bg-primary px-5 text-sm font-bold text-white transition-colors hover:bg-primary-deep"
         >
           <ArrowLeft size={16} /> Go Back
         </button>
@@ -189,7 +189,7 @@ export default function MovieDetailPage() {
         {/* Back button */}
         <button
           onClick={() => navigate(-1)}
-          className="absolute left-4 top-5 flex items-center gap-2 rounded-lg bg-black/40 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-black/60 sm:left-8"
+          className="absolute left-4 top-5 flex items-center gap-2 rounded-primary bg-black/40 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-black/60 sm:left-8"
         >
           <ArrowLeft size={15} /> Back
         </button>
@@ -206,7 +206,7 @@ export default function MovieDetailPage() {
             transition={{ delay: 0.15 }}
             className="mx-auto w-[200px] shrink-0 md:mx-0 md:w-[240px]"
           >
-            <div className="aspect-[2/3] w-full overflow-hidden rounded-xl border border-surface-border shadow-card">
+            <div className="aspect-[2/3] w-full overflow-hidden rounded-primary border border-surface-border shadow-card">
               {poster ? (
                 <img src={poster} alt={title} className="h-full w-full object-cover" />
               ) : (
@@ -275,7 +275,7 @@ export default function MovieDetailPage() {
             {/* Stat boxes */}
             <div className="mt-6 flex flex-wrap gap-3">
               {rating && (
-                <div className="flex flex-col items-center rounded-lg border border-surface-border bg-surface-elevated px-5 py-3">
+                <div className="flex flex-col items-center rounded-primary border border-surface-border bg-surface-elevated px-5 py-3">
                   <span className="text-xs font-medium uppercase tracking-widest text-text-muted">
                     Rating
                   </span>
@@ -286,7 +286,7 @@ export default function MovieDetailPage() {
                 </div>
               )}
               {voteCount && (
-                <div className="flex flex-col items-center rounded-lg border border-surface-border bg-surface-elevated px-5 py-3">
+                <div className="flex flex-col items-center rounded-primary border border-surface-border bg-surface-elevated px-5 py-3">
                   <span className="text-xs font-medium uppercase tracking-widest text-text-muted">
                     Votes
                   </span>
@@ -294,7 +294,7 @@ export default function MovieDetailPage() {
                 </div>
               )}
               {data.status && (
-                <div className="flex flex-col items-center rounded-lg border border-surface-border bg-surface-elevated px-5 py-3">
+                <div className="flex flex-col items-center rounded-primary border border-surface-border bg-surface-elevated px-5 py-3">
                   <span className="text-xs font-medium uppercase tracking-widest text-text-muted">
                     Status
                   </span>
@@ -302,7 +302,7 @@ export default function MovieDetailPage() {
                 </div>
               )}
               {data.media_type === 'tv' && data.number_of_seasons && (
-                <div className="flex flex-col items-center rounded-lg border border-surface-border bg-surface-elevated px-5 py-3">
+                <div className="flex flex-col items-center rounded-primary border border-surface-border bg-surface-elevated px-5 py-3">
                   <span className="text-xs font-medium uppercase tracking-widest text-text-muted">
                     Seasons
                   </span>
@@ -317,7 +317,7 @@ export default function MovieDetailPage() {
             <button
               onClick={handleWatchlistToggle}
               className={cn(
-                'mt-6 flex h-11 items-center gap-2 rounded-lg px-6 text-sm font-bold transition-colors',
+                'mt-6 flex h-11 items-center gap-2 rounded-primary px-6 text-sm font-bold transition-colors',
                 inWatchlist
                   ? 'border border-primary bg-primary/10 text-primary-soft hover:bg-primary/20'
                   : 'bg-primary text-white hover:bg-primary-deep',
@@ -372,7 +372,7 @@ export default function MovieDetailPage() {
           >
             <h2 className="mb-4 text-xl font-bold text-text-primary">Trailer</h2>
             <div
-              className="overflow-hidden rounded-xl border border-surface-border"
+              className="overflow-hidden rounded-primary border border-surface-border"
               style={{ aspectRatio: '16/9', maxWidth: 720 }}
             >
               <iframe

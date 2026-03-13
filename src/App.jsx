@@ -4,6 +4,7 @@ import { onAuthStateChanged } from 'firebase/auth'
 import Navbar from '@/components/Navbar'
 import PageTransition from '@/components/PageTransition'
 import ErrorBoundary from '@/components/ErrorBoundary'
+import { Toaster } from '@/components/ui/toaster'
 import { auth } from '@/lib/firebase'
 import { useAuthStore } from '@/store/authStore'
 import { useWatchlistStore } from '@/store/watchlistStore'
@@ -51,6 +52,7 @@ export default function App() {
           </main>
         </PageTransition>
       </ErrorBoundary>
+      <Toaster />
     </div>
   )
 }

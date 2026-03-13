@@ -40,7 +40,7 @@ export default function MovieCard({ movie, variant = 'search' }) {
   }
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-lg border border-surface-border bg-surface-card shadow-card transition-all duration-200 hover:-translate-y-1 hover:border-primary hover:shadow-glow">
+    <div className="flex flex-col overflow-hidden rounded-primary border border-surface-border bg-surface-card shadow-card transition-all duration-200 hover:-translate-y-1 hover:border-primary hover:shadow-glow">
       {/* Poster */}
       <Link to={detailPath} className="relative block aspect-[2/3] w-full overflow-hidden">
         {poster ? (
@@ -74,7 +74,7 @@ export default function MovieCard({ movie, variant = 'search' }) {
       <div className="flex gap-2 px-4 pb-4">
         <Link
           to={detailPath}
-          className="flex h-[38px] flex-1 items-center justify-center rounded-md bg-primary text-sm font-bold text-white transition-colors hover:bg-primary-deep"
+          className="flex h-[38px] flex-1 items-center justify-center rounded-primary bg-primary text-sm font-bold text-white transition-colors hover:bg-primary-deep"
         >
           Details
         </Link>
@@ -84,7 +84,7 @@ export default function MovieCard({ movie, variant = 'search' }) {
             type="button"
             onClick={inWatchlist ? handleRemove : handleAdd}
             className={cn(
-              'flex h-[38px] flex-1 items-center justify-center gap-1 rounded-md border text-sm font-bold transition-colors',
+              'flex h-[38px] flex-1 items-center justify-center gap-1 rounded-primary border text-sm font-bold transition-colors',
               inWatchlist
                 ? 'border-primary bg-primary/10 text-primary-soft hover:bg-primary/20'
                 : 'border-primary text-primary hover:bg-primary/10',
@@ -99,7 +99,7 @@ export default function MovieCard({ movie, variant = 'search' }) {
           <button
             type="button"
             onClick={handleRemove}
-            className="flex h-[38px] flex-1 items-center justify-center rounded-md border border-primary text-sm font-bold text-primary transition-colors hover:bg-primary/10"
+            className="flex h-[38px] flex-1 items-center justify-center rounded-primary border border-primary text-sm font-bold text-primary transition-colors hover:bg-primary/10"
           >
             ✕ Remove
           </button>

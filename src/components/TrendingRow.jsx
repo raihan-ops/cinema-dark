@@ -18,7 +18,7 @@ function TrendingCard({ movie }) {
       onClick={() => navigate(ROUTES.MOVIE_DETAIL(movie.id))}
     >
       {/* Poster */}
-      <div className="relative h-[330px] w-full overflow-hidden rounded-lg">
+      <div className="relative h-[330px] w-full overflow-hidden rounded-primary">
         {poster ? (
           <img
             src={poster}
@@ -26,13 +26,13 @@ function TrendingCard({ movie }) {
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center rounded-lg bg-surface-card text-sm text-text-secondary">
+          <div className="flex h-full w-full items-center justify-center rounded-primary bg-surface-card text-sm text-text-secondary">
             No Image
           </div>
         )}
 
         {/* Hover overlay */}
-        <div className="absolute inset-0 flex items-center justify-center gap-3 rounded-lg bg-black/60 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+        <div className="absolute inset-0 flex items-center justify-center gap-3 rounded-primary bg-black/60 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
           <button
             type="button"
             className="flex h-[30px] w-[27px] items-center justify-center rounded bg-primary text-white"
@@ -67,7 +67,7 @@ function TrendingCard({ movie }) {
 function TrendingCardSkeleton() {
   return (
     <div className="w-[220px] shrink-0 animate-pulse">
-      <div className="h-[330px] rounded-lg bg-surface-input" />
+      <div className="h-[330px] rounded-primary bg-surface-input" />
       <div className="mt-3 h-4 w-3/4 rounded bg-surface-input" />
       <div className="mt-2 h-3 w-1/2 rounded bg-surface-input" />
     </div>

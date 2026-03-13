@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from 'firebase/auth'
+import { toast } from 'sonner'
 import { auth } from '@/lib/firebase'
 import { loadWatchlist } from '@/api/firebase'
 import { useAuthStore } from '@/store/authStore'
@@ -41,7 +42,6 @@ export function useAuthForm(mode) {
       : { name: '', email: '', password: '', confirmPassword: '' }
   )
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
 
   function handleChange(e) {
     const { name, value, type, checked } = e.target
@@ -50,10 +50,9 @@ export function useAuthForm(mode) {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    setError('')
 
     if (mode === 'signup' && fields.password !== fields.confirmPassword) {
-      setError('Passwords do not match.')
+      toast.error('Passwords do not match.')
       return
     }
 
@@ -71,15 +70,19 @@ export function useAuthForm(mode) {
 
       const user = credential.user
       setUser(user)
-      const movies = await loadWatchlist(user.uid)
-      setMovies(movies)
+      try {
+        const movies = await loadWatchlist(user.uid)
+        setMovies(movies)
+      } catch {
+        // watchlist load failure should not block login
+      }
       navigate(ROUTES.SEARCH)
     } catch (err) {
-      setError(friendlyError(err.code))
+      toast.error(friendlyError(err.code))
     } finally {
       setLoading(false)
     }
   }
 
-  return { fields, handleChange, handleSubmit, loading, error }
+  return { fields, handleChange, handleSubmit, loading }
 }
