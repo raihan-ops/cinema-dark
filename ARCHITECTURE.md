@@ -219,9 +219,9 @@ Phase 6 — Polish
 #### Primary — Rose
 | Token              | Hex       | Usage                        |
 | ------------------ | --------- | ---------------------------- |
-| `rose-base`        | `#E31048` | Primary buttons, active CTA  |
-| `rose-deep`        | `#BE1230` | Hover state on primary       |
-| `rose-soft`        | `#FB7186` | Active / pressed state       |
+| `primary`        | `#E31048` | Primary buttons, active CTA  |
+| `primary-deep`        | `#BE1230` | Hover state on primary       |
+| `primary-soft`        | `#FB7186` | Active / pressed state       |
 
 #### Neutrals & Surfaces
 | Token              | Hex       | Usage                              |

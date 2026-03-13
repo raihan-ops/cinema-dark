@@ -1,4 +1,5 @@
-const TMDB_BASE = 'https://api.themoviedb.org/3'
+import { TMDB_BASE, TMDB_IMAGE_BASE, ENDPOINTS } from './endpoints'
+
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY
 
 async function tmdbFetch(endpoint, params = {}) {
@@ -12,22 +13,22 @@ async function tmdbFetch(endpoint, params = {}) {
 }
 
 export function searchMovies(query, page = 1) {
-  return tmdbFetch('/search/multi', { query, page })
+  return tmdbFetch(ENDPOINTS.SEARCH_MULTI, { query, page })
 }
 
 export function getTrending(timeWindow = 'week') {
-  return tmdbFetch(`/trending/all/${timeWindow}`)
+  return tmdbFetch(ENDPOINTS.TRENDING_ALL(timeWindow))
 }
 
 export function getMovieDetail(id) {
-  return tmdbFetch(`/movie/${id}`, { append_to_response: 'credits,videos,similar' })
+  return tmdbFetch(ENDPOINTS.MOVIE_DETAIL(id), { append_to_response: 'credits,videos,similar' })
 }
 
 export function getTvDetail(id) {
-  return tmdbFetch(`/tv/${id}`, { append_to_response: 'credits,videos,similar' })
+  return tmdbFetch(ENDPOINTS.TV_DETAIL(id), { append_to_response: 'credits,videos,similar' })
 }
 
-export const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p'
+export { TMDB_IMAGE_BASE }
 
 export function posterUrl(path, size = 'w500') {
   if (!path) return null

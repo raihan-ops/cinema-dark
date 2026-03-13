@@ -8,18 +8,22 @@
 
 @theme {
   /* Colors — Primary Rose */
-  --color-rose-base: #e31048;
-  --color-rose-deep: #be1230;
-  --color-rose-soft: #fb7186;
+  --color-primary: #e31048;
+  --color-primary-deep: #be1230;
+  --color-primary-soft: #fb7186;
 
   /* Colors — Surfaces */
   --color-surface-black: #0f0708;
+  --color-surface-elevated: #211115;
   --color-surface-card: #1a1112;
+  --color-surface-input: #1e293b;
   --color-surface-border: #2d1a1e;
 
   /* Colors — Text */
   --color-text-primary: #fafafa;
   --color-text-secondary: #a1a1aa;
+  --color-text-muted: #6b7280;
+  --color-text-nav: #cbd5e1;
 
   /* Colors — Semantic */
   --color-success: #22c55e;
@@ -153,7 +157,6 @@ body {
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
