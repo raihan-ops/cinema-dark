@@ -56,7 +56,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="sticky top-0 z-50 flex h-18.25 items-center justify-between gap-6 bg-surface-elevated px-4 sm:px-8 border-b border-primary/20">
+    <nav className="sticky top-0 z-1000 flex h-18.25 items-center justify-between gap-6 bg-surface-elevated px-4 sm:px-8 border-b border-primary/20">
       {/* Logo */}
       <div className="flex items-center gap-4">
         <Link to={ROUTES.HOME} className="flex shrink-0 items-center gap-2">

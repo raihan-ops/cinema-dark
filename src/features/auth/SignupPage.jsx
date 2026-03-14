@@ -43,18 +43,18 @@ const socialProviders = [
     icon: <GoogleIcon />,
     hoverClass: 'hover:border-[#4285F4]/50 hover:bg-[#4285F4]/10 hover:text-white',
   },
-  {
-    id: 'facebook',
-    label: 'Continue with Facebook',
-    icon: <FacebookIcon />,
-    hoverClass: 'hover:border-[#1877F2]/50 hover:bg-[#1877F2]/10 hover:text-white',
-  },
-  {
-    id: 'github',
-    label: 'Continue with GitHub',
-    icon: <GitHubIcon />,
-    hoverClass: 'hover:border-white/30 hover:bg-white/8 hover:text-white',
-  },
+  // {
+  //   id: 'facebook',
+  //   label: 'Continue with Facebook',
+  //   icon: <FacebookIcon />,
+  //   hoverClass: 'hover:border-[#1877F2]/50 hover:bg-[#1877F2]/10 hover:text-white',
+  // },
+  // {
+  //   id: 'github',
+  //   label: 'Continue with GitHub',
+  //   icon: <GitHubIcon />,
+  //   hoverClass: 'hover:border-white/30 hover:bg-white/8 hover:text-white',
+  // },
 ]
 
 export default function SignupPage() {

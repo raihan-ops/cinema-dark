@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -10,6 +10,7 @@ import {
   Tv,
   Film,
 } from "lucide-react";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useMovieDetail } from "./useMovieDetail";
 import { backdropUrl, posterUrl } from "@/api/tmdb";
 import { useWatchlist } from "@/features/watchlist/useWatchlist";
@@ -23,6 +24,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { ROUTES } from "@/router/routes";
 
 function formatRuntime(minutes) {
   if (!minutes) return null;
@@ -99,8 +101,11 @@ const sectionVariants = {
 };
 
 export default function MovieDetailPage() {
+  useScrollToTop();
+
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { data, isLoading, isError } = useMovieDetail(id);
 
@@ -121,7 +126,7 @@ export default function MovieDetailPage() {
           again.
         </p>
         <button
-          onClick={() => navigate(-1)}
+          onClick={handleBack}
           className="mt-6 flex h-10 items-center gap-2 rounded-primary bg-primary px-5 text-sm font-bold text-white transition-colors hover:bg-primary-deep"
         >
           <ArrowLeft size={16} /> Go Back
@@ -182,12 +187,22 @@ export default function MovieDetailPage() {
     }
   }
 
+  function handleBack() {
+    if (location.key !== 'default') {
+      navigate(-1);
+      return;
+    }
+
+    const fallbackRoute = location.state?.from || ROUTES.SEARCH;
+    navigate(fallbackRoute, { replace: true });
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className="min-h-screen bg-surface-black"
+      className="relative min-h-screen bg-surface-black"
     >
       {/* ── Backdrop ───────────────────────────────────────────────────────── */}
       <div className="relative aspect-video w-full max-h-[600px] overflow-hidden">
@@ -203,15 +218,15 @@ export default function MovieDetailPage() {
         {/* gradient overlays */}
         <div className="absolute inset-0 bg-linear-to-t from-surface-black via-surface-black/50 to-transparent" />
         <div className="absolute inset-0 bg-linear-to-r from-surface-black/70 to-transparent" />
-
-        {/* Back button */}
-        <button
-          onClick={() => navigate(-1)}
-          className="absolute left-4 top-5 flex items-center gap-2 rounded-primary bg-black/40 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-black/60 sm:left-8"
-        >
-          <ArrowLeft size={15} /> Back
-        </button>
       </div>
+
+      {/* Back button — outside overflow-hidden, z-50 so it's above the -mt-50 content on mobile */}
+      <button
+        onClick={handleBack}
+        className="absolute left-4 top-5 z-50 flex items-center gap-2 rounded-primary bg-black/40 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-black/60 sm:left-8"
+      >
+        <ArrowLeft size={15} />
+      </button>
 
       {/* ── Main content ──────────────────────────────────────────────────── */}
       <div className="relative mx-auto max-w-7xl px-4 sm:px-8">

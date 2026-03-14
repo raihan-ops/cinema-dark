@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Info, Trash2, Bookmark, BookmarkCheck } from 'lucide-react'
 import { posterUrl } from '@/api/tmdb'
 import { getGenreName } from '@/lib/genres'
@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import { Button, buttonVariants } from '@/components/ui/button'
 
 export default function MovieCard({ movie, variant = 'search' }) {
+  const location = useLocation()
   const { addMovie, removeMovie, isInWatchlist } = useWatchlist()
   const inWatchlist = isInWatchlist(movie.id)
 
@@ -31,14 +32,18 @@ export default function MovieCard({ movie, variant = 'search' }) {
   }
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-primary border border-surface-border bg-surface-card shadow-card transition-all duration-200 hover:-translate-y-1 hover:border-primary hover:shadow-glow">
+    <div className="flex flex-col overflow-hidden rounded-primary border border-surface-border bg-surface-card shadow-card transition-all duration-200 hover:border-primary hover:shadow-glow">
       {/* Poster */}
-      <Link to={detailPath} className="relative block aspect-[3/4] w-full overflow-hidden">
+      <Link
+        to={detailPath}
+        state={{ from: `${location.pathname}${location.search}` }}
+        className="relative block aspect-[3/4] w-full overflow-hidden"
+      >
         {poster ? (
           <img
             src={poster}
             alt={title}
-            className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+            className="h-full w-full object-cover transition-transform duration-300"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-surface-card text-sm text-text-secondary">
@@ -62,10 +67,11 @@ export default function MovieCard({ movie, variant = 'search' }) {
       </div>
 
       {/* Actions */}
-      <div className="flex flex-col sm:flex-row gap-1.5 px-3 pb-3 sm:px-4 sm:pb-4">
+      <div className="flex flex-col sm:flex-row gap-2 px-3 pb-3 sm:px-4 sm:pb-4">
         <Link
           to={detailPath}
-          className={cn(buttonVariants({ size: 'default' }), 'flex-1 shrink min-w-0 w-full')}
+          state={{ from: `${location.pathname}${location.search}` }}
+          className={cn(buttonVariants({ size: 'default' }), 'flex-1 shrink min-w-0 w-full py-1.5')}
         >
           <Info size={14} />
           Details
@@ -76,7 +82,7 @@ export default function MovieCard({ movie, variant = 'search' }) {
             size="default"
             onClick={inWatchlist ? handleRemove : handleAdd}
             className={cn(
-              'flex-1 shrink min-w-0 w-full border border-primary dark:border-primary',
+              'flex-1 shrink min-w-0 w-full border border-primary dark:border-primary py-1.5',
               inWatchlist
                 ? 'bg-primary/10 dark:bg-primary/10 text-primary-soft hover:bg-primary/20 dark:hover:bg-primary/20'
                 : 'bg-transparent dark:bg-transparent text-primary hover:bg-primary/10 dark:hover:bg-primary/10',
@@ -90,7 +96,7 @@ export default function MovieCard({ movie, variant = 'search' }) {
         {variant === 'watchlist' && (
           <Button
             size="default"
-            className="flex-1 shrink min-w-0 w-full border border-primary dark:border-primary bg-transparent dark:bg-transparent text-primary hover:bg-primary/10 dark:hover:bg-primary/10"
+            className="flex-1 shrink min-w-0 w-full border border-primary dark:border-primary bg-transparent dark:bg-transparent text-primary hover:bg-primary/10 dark:hover:bg-primary/10 py-1.5"
             onClick={handleRemove}
           >
             <Trash2 size={14} />
