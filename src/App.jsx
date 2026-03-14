@@ -5,6 +5,8 @@ import Navbar from '@/components/Navbar'
 import PageTransition from '@/components/PageTransition'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { Toaster } from '@/components/ui/toaster'
+import Footer from '@/components/Footer'
+import BottomNav from '@/components/BottomNav'
 import { auth } from '@/lib/firebase'
 import { useAuthStore } from '@/store/authStore'
 import { useWatchlistStore } from '@/store/watchlistStore'
@@ -47,11 +49,13 @@ export default function App() {
       <Navbar />
       <ErrorBoundary>
         <PageTransition>
-          <main>
+          <main className="pb-16 sm:pb-0">
             <Outlet />
           </main>
         </PageTransition>
       </ErrorBoundary>
+      <Footer />
+      <BottomNav />
       <Toaster />
     </div>
   )

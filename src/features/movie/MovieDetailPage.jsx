@@ -1,5 +1,5 @@
-import { useParams, useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { useParams, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   ArrowLeft,
   Bookmark,
@@ -9,36 +9,45 @@ import {
   Calendar,
   Tv,
   Film,
-} from 'lucide-react'
-import { useMovieDetail } from './useMovieDetail'
-import { backdropUrl, posterUrl } from '@/api/tmdb'
-import { useWatchlistStore } from '@/store/watchlistStore'
-import { useAuthStore } from '@/store/authStore'
-import { addToWatchlist, removeFromWatchlist } from '@/api/firebase'
-import MovieCard from '@/components/MovieCard'
-import { cn } from '@/lib/utils'
+} from "lucide-react";
+import { useMovieDetail } from "./useMovieDetail";
+import { backdropUrl, posterUrl } from "@/api/tmdb";
+import { useWatchlist } from "@/features/watchlist/useWatchlist";
+import MovieCard from "@/components/MovieCard";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 function formatRuntime(minutes) {
-  if (!minutes) return null
-  const h = Math.floor(minutes / 60)
-  const m = minutes % 60
-  return h > 0 ? `${h}h ${m}m` : `${m}m`
+  if (!minutes) return null;
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return h > 0 ? `${h}h ${m}m` : `${m}m`;
 }
 
 function DetailSkeleton() {
   return (
     <div className="min-h-screen animate-pulse bg-surface-black">
-      <div className="h-[480px] w-full bg-surface-elevated" />
-      <div className="mx-auto max-w-[1280px] px-4 sm:px-8">
-        <div className="-mt-[200px] flex flex-col gap-8 md:flex-row md:gap-10">
-          <div className="mx-auto h-[330px] w-[220px] shrink-0 rounded-primary bg-surface-input md:mx-0" />
-          <div className="flex-1 space-y-4 pt-0 md:pt-[120px]">
+      <div className="h-120 w-full bg-surface-elevated" />
+      <div className="mx-auto max-w-7xl px-4 sm:px-8">
+        <div className="-mt-50 flex flex-col gap-8 md:flex-row md:gap-10">
+          <div className="mx-auto h-82.5 w-55 shrink-0 rounded-primary bg-surface-input md:mx-0" />
+          <div className="flex-1 space-y-4 pt-0 md:pt-32.5">
             <div className="h-9 w-1/2 rounded bg-surface-input" />
             <div className="h-4 w-1/3 rounded bg-surface-input" />
             <div className="h-4 w-2/3 rounded bg-surface-input" />
             <div className="mt-6 flex gap-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-[76px] w-24 rounded-primary bg-surface-input" />
+                <div
+                  key={i}
+                  className="h-19 w-24 rounded-primary bg-surface-input"
+                />
               ))}
             </div>
             <div className="h-11 w-44 rounded-primary bg-surface-input" />
@@ -52,11 +61,11 @@ function DetailSkeleton() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function CastCard({ person }) {
-  const photo = posterUrl(person.profile_path, 'w185')
+  const photo = posterUrl(person.profile_path, "w185");
   return (
     <div className="w-27.5 shrink-0">
       <div className="h-37.5 w-full overflow-hidden rounded-primary bg-surface-card">
@@ -72,41 +81,44 @@ function CastCard({ person }) {
           </div>
         )}
       </div>
-      <p className="mt-2 line-clamp-2 text-xs font-bold text-text-primary">{person.name}</p>
+      <p className="mt-2 line-clamp-2 text-xs font-bold text-text-primary">
+        {person.name}
+      </p>
       {(person.character || person.job) && (
         <p className="mt-0.5 line-clamp-1 text-xs text-text-secondary">
           {person.character || person.job}
         </p>
       )}
     </div>
-  )
+  );
 }
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0 },
-}
+};
 
 export default function MovieDetailPage() {
-  const { id } = useParams()
-  const navigate = useNavigate()
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  const { data, isLoading, isError } = useMovieDetail(id)
+  const { data, isLoading, isError } = useMovieDetail(id);
 
-  const user = useAuthStore((s) => s.user)
-  const addMovie = useWatchlistStore((s) => s.addMovie)
-  const removeMovie = useWatchlistStore((s) => s.removeMovie)
-  const inWatchlist = useWatchlistStore((s) => s.isInWatchlist(Number(id)))
+  const { addMovie, removeMovie, isInWatchlist } = useWatchlist();
+  const inWatchlist = isInWatchlist(Number(id));
 
-  if (isLoading) return <DetailSkeleton />
+  if (isLoading) return <DetailSkeleton />;
 
   if (isError) {
     return (
       <div className="flex min-h-[calc(100vh-73px)] flex-col items-center justify-center bg-surface-black px-8 text-center">
         <Film size={48} className="mb-4 text-text-muted" />
-        <p className="text-2xl font-bold text-text-primary">Could not load title</p>
+        <p className="text-2xl font-bold text-text-primary">
+          Could not load title
+        </p>
         <p className="mt-2 text-base text-text-secondary">
-          This page may not exist or there was a network error. Please try again.
+          This page may not exist or there was a network error. Please try
+          again.
         </p>
         <button
           onClick={() => navigate(-1)}
@@ -115,33 +127,37 @@ export default function MovieDetailPage() {
           <ArrowLeft size={16} /> Go Back
         </button>
       </div>
-    )
+    );
   }
 
-  if (!data) return null
+  if (!data) return null;
 
-  const title = data.title || data.name || 'Unknown'
-  const year = (data.release_date || data.first_air_date || '').slice(0, 4)
-  const runtime = data.runtime || data.episode_run_time?.[0] || null
-  const backdrop = backdropUrl(data.backdrop_path)
-  const poster = posterUrl(data.poster_path, 'w500')
-  const rating = data.vote_average ? Number(data.vote_average).toFixed(1) : null
-  const voteCount =
-    data.vote_count
-      ? data.vote_count >= 1000
-        ? `${(data.vote_count / 1000).toFixed(1)}K`
-        : String(data.vote_count)
-      : null
-  const genres = data.genres ?? []
-  const overview = data.overview ?? ''
-  const cast = data.credits?.cast?.slice(0, 14) ?? []
-  const directors = data.credits?.crew?.filter((c) => c.job === 'Director').slice(0, 3) ?? []
-  const creators = (data.created_by ?? []).slice(0, 3)
-  const crewHighlights = data.media_type === 'tv' ? creators : directors
+  const title = data.title || data.name || "Unknown";
+  const year = (data.release_date || data.first_air_date || "").slice(0, 4);
+  const runtime = data.runtime || data.episode_run_time?.[0] || null;
+  const backdrop = backdropUrl(data.backdrop_path);
+  const poster = posterUrl(data.poster_path, "w500");
+  const rating = data.vote_average
+    ? Number(data.vote_average).toFixed(1)
+    : null;
+  const voteCount = data.vote_count
+    ? data.vote_count >= 1000
+      ? `${(data.vote_count / 1000).toFixed(1)}K`
+      : String(data.vote_count)
+    : null;
+  const genres = data.genres ?? [];
+  const overview = data.overview ?? "";
+  const cast = data.credits?.cast?.slice(0, 14) ?? [];
+  const directors =
+    data.credits?.crew?.filter((c) => c.job === "Director").slice(0, 3) ?? [];
+  const creators = (data.created_by ?? []).slice(0, 3);
+  const crewHighlights = data.media_type === "tv" ? creators : directors;
   const trailer = data.videos?.results?.find(
-    (v) => v.site === 'YouTube' && (v.type === 'Trailer' || v.type === 'Teaser'),
-  )
-  const similar = data.similar?.results?.filter((m) => m.poster_path).slice(0, 8) ?? []
+    (v) =>
+      v.site === "YouTube" && (v.type === "Trailer" || v.type === "Teaser"),
+  );
+  const similar =
+    data.similar?.results?.filter((m) => m.poster_path).slice(0, 8) ?? [];
 
   // Watclist-compatible object built from full detail response
   const movieObj = {
@@ -156,15 +172,13 @@ export default function MovieDetailPage() {
     genre_ids: genres.map((g) => g.id),
     media_type: data.media_type,
     overview: data.overview,
-  }
+  };
 
   async function handleWatchlistToggle() {
     if (inWatchlist) {
-      removeMovie(data.id)
-      if (user?.uid) await removeFromWatchlist(user.uid, movieObj).catch(console.error)
+      await removeMovie(data.id);
     } else {
-      addMovie(movieObj)
-      if (user?.uid) await addToWatchlist(user.uid, movieObj).catch(console.error)
+      await addMovie(movieObj);
     }
   }
 
@@ -176,15 +190,19 @@ export default function MovieDetailPage() {
       className="min-h-screen bg-surface-black"
     >
       {/* ── Backdrop ───────────────────────────────────────────────────────── */}
-      <div className="relative h-[480px] w-full overflow-hidden">
+      <div className="relative aspect-video w-full max-h-[600px] overflow-hidden">
         {backdrop ? (
-          <img src={backdrop} alt={title} className="h-full w-full object-cover" />
+          <img
+            src={backdrop}
+            alt={title}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
         ) : (
           <div className="h-full w-full bg-surface-elevated" />
         )}
         {/* gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-surface-black via-surface-black/50 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-surface-black/70 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-surface-black via-surface-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-surface-black/70 to-transparent" />
 
         {/* Back button */}
         <button
@@ -196,19 +214,23 @@ export default function MovieDetailPage() {
       </div>
 
       {/* ── Main content ──────────────────────────────────────────────────── */}
-      <div className="mx-auto max-w-[1280px] px-4 sm:px-8">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-8">
         {/* Hero: poster + meta */}
-        <div className="-mt-[200px] flex flex-col gap-8 md:flex-row md:gap-10">
+        <div className="-mt-50 flex flex-col gap-8 md:flex-row md:gap-10 ">
           {/* Poster */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="mx-auto w-[200px] shrink-0 md:mx-0 md:w-[240px]"
+            className="mx-auto w-50 shrink-0 md:mx-0 md:w-60"
           >
-            <div className="aspect-[2/3] w-full overflow-hidden rounded-primary border border-surface-border shadow-card">
+            <div className=" aspect-2/3 w-full overflow-hidden rounded-primary border border-surface-border shadow-card">
               {poster ? (
-                <img src={poster} alt={title} className="h-full w-full object-cover" />
+                <img
+                  src={poster}
+                  alt={title}
+                  className="h-full w-full object-cover"
+                />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-surface-card text-sm text-text-secondary">
                   No Image
@@ -222,8 +244,22 @@ export default function MovieDetailPage() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
-            className="flex-1 pt-0 md:pt-[130px]"
+            className="flex-1 pt-0 md:pt-32.5"
           >
+            {/* Genre pills */}
+            {genres.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {genres.map((g) => (
+                  <span
+                    key={g.id}
+                    className="uppercase rounded-primary border border-primary/20 bg-surface-elevated px-3 py-1 text-xs font-semibold text-primary"
+                  >
+                    {g.name}
+                  </span>
+                ))}
+              </div>
+            )}
+
             <h1 className="text-3xl font-black leading-tight text-text-primary sm:text-4xl md:text-5xl">
               {title}
             </h1>
@@ -249,28 +285,14 @@ export default function MovieDetailPage() {
                 </span>
               )}
               <span className="flex items-center gap-1 text-xs uppercase tracking-wide">
-                {data.media_type === 'tv' ? (
+                {data.media_type === "tv" ? (
                   <Tv size={13} className="text-primary" />
                 ) : (
                   <Film size={13} className="text-primary" />
                 )}
-                {data.media_type === 'tv' ? 'TV Series' : 'Movie'}
+                {data.media_type === "tv" ? "TV Series" : "Movie"}
               </span>
             </div>
-
-            {/* Genre pills */}
-            {genres.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-2">
-                {genres.map((g) => (
-                  <span
-                    key={g.id}
-                    className="rounded-full border border-surface-border bg-surface-elevated px-3 py-1 text-xs font-medium text-text-nav"
-                  >
-                    {g.name}
-                  </span>
-                ))}
-              </div>
-            )}
 
             {/* Stat boxes */}
             <div className="mt-6 flex flex-wrap gap-3">
@@ -290,7 +312,9 @@ export default function MovieDetailPage() {
                   <span className="text-xs font-medium uppercase tracking-widest text-text-muted">
                     Votes
                   </span>
-                  <span className="mt-1 text-2xl font-black text-text-primary">{voteCount}</span>
+                  <span className="mt-1 text-2xl font-black text-text-primary">
+                    {voteCount}
+                  </span>
                 </div>
               )}
               {data.status && (
@@ -298,10 +322,12 @@ export default function MovieDetailPage() {
                   <span className="text-xs font-medium uppercase tracking-widest text-text-muted">
                     Status
                   </span>
-                  <span className="mt-1 text-sm font-bold text-text-primary">{data.status}</span>
+                  <span className="mt-1 text-sm font-bold text-text-primary">
+                    {data.status}
+                  </span>
                 </div>
               )}
-              {data.media_type === 'tv' && data.number_of_seasons && (
+              {data.media_type === "tv" && data.number_of_seasons && (
                 <div className="flex flex-col items-center rounded-primary border border-surface-border bg-surface-elevated px-5 py-3">
                   <span className="text-xs font-medium uppercase tracking-widest text-text-muted">
                     Seasons
@@ -314,18 +340,22 @@ export default function MovieDetailPage() {
             </div>
 
             {/* Watchlist toggle */}
-            <button
+            <Button
               onClick={handleWatchlistToggle}
               className={cn(
-                'mt-6 flex h-11 items-center gap-2 rounded-primary px-6 text-sm font-bold transition-colors',
+                "mt-6 flex h-11 items-center gap-2 rounded-primary px-6 text-sm font-bold transition-colors",
                 inWatchlist
-                  ? 'border border-primary bg-primary/10 text-primary-soft hover:bg-primary/20'
-                  : 'bg-primary text-white hover:bg-primary-deep',
+                  ? "border border-primary bg-primary/10 text-primary-soft hover:bg-primary/20"
+                  : "bg-primary text-white hover:bg-primary-deep",
               )}
             >
-              {inWatchlist ? <BookmarkCheck size={16} /> : <Bookmark size={16} />}
-              {inWatchlist ? 'In Watchlist' : 'Add to Watchlist'}
-            </button>
+              {inWatchlist ? (
+                <BookmarkCheck size={16} />
+              ) : (
+                <Bookmark size={16} />
+              )}
+              {inWatchlist ? "In Watchlist" : "Add to Watchlist"}
+            </Button>
           </motion.div>
         </div>
 
@@ -340,7 +370,9 @@ export default function MovieDetailPage() {
           >
             {overview && (
               <>
-                <h2 className="mb-4 text-xl font-bold text-text-primary">Overview</h2>
+                <h2 className="mb-4 text-xl font-bold text-text-primary">
+                  Overview
+                </h2>
                 <p className="max-w-[800px] text-base leading-relaxed text-text-secondary">
                   {overview}
                 </p>
@@ -351,9 +383,11 @@ export default function MovieDetailPage() {
                 {crewHighlights.map((person) => (
                   <div key={person.id ?? person.credit_id}>
                     <p className="text-xs font-medium uppercase tracking-widest text-text-muted">
-                      {data.media_type === 'tv' ? 'Creator' : 'Director'}
+                      {data.media_type === "tv" ? "Creator" : "Director"}
                     </p>
-                    <p className="mt-1 text-sm font-bold text-text-primary">{person.name}</p>
+                    <p className="mt-1 text-sm font-bold text-text-primary">
+                      {person.name}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -370,10 +404,12 @@ export default function MovieDetailPage() {
             transition={{ delay: 0.4 }}
             className="mt-12"
           >
-            <h2 className="mb-4 text-xl font-bold text-text-primary">Trailer</h2>
+            <h2 className="mb-4 text-xl font-bold text-text-primary">
+              Trailer
+            </h2>
             <div
               className="overflow-hidden rounded-primary border border-surface-border"
-              style={{ aspectRatio: '16/9', maxWidth: 720 }}
+              style={{ aspectRatio: "16/9", maxWidth: 720 }}
             >
               <iframe
                 src={`https://www.youtube.com/embed/${trailer.key}`}
@@ -396,11 +432,20 @@ export default function MovieDetailPage() {
             className="mt-12"
           >
             <h2 className="mb-5 text-xl font-bold text-text-primary">Cast</h2>
-            <div className="flex gap-4 overflow-x-auto pb-3 [&::-webkit-scrollbar]:hidden">
-              {cast.map((person) => (
-                <CastCard key={`${person.id}-${person.cast_id}`} person={person} />
-              ))}
-            </div>
+            <Carousel opts={{ align: 'start', dragFree: true }}>
+              <CarouselContent className="-ml-4">
+                {cast.map((person) => (
+                  <CarouselItem
+                    key={`${person.id}-${person.cast_id}`}
+                    className="pl-4 basis-auto"
+                  >
+                    <CastCard person={person} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden sm:flex -left-4 border-surface-border bg-surface-elevated text-text-secondary hover:bg-primary hover:text-white hover:border-primary disabled:opacity-0" />
+              <CarouselNext className="hidden sm:flex -right-4 border-surface-border bg-surface-elevated text-text-secondary hover:bg-primary hover:text-white hover:border-primary disabled:opacity-0" />
+            </Carousel>
           </motion.section>
         )}
 
@@ -413,7 +458,9 @@ export default function MovieDetailPage() {
             transition={{ delay: 0.5 }}
             className="mt-12 pb-16"
           >
-            <h2 className="mb-6 text-xl font-bold text-text-primary">Similar Titles</h2>
+            <h2 className="mb-6 text-xl font-bold text-text-primary">
+              Similar Titles
+            </h2>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
               {similar.map((movie) => (
                 <MovieCard
@@ -427,5 +474,5 @@ export default function MovieDetailPage() {
         )}
       </div>
     </motion.div>
-  )
+  );
 }

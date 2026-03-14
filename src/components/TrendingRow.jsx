@@ -1,16 +1,36 @@
 import { useNavigate } from 'react-router-dom'
-import { Play, Bookmark } from 'lucide-react'
+import { Play, Bookmark, BookmarkCheck } from 'lucide-react'
 import { useTrending } from '@/features/search/useMovieSearch'
 import { posterUrl } from '@/api/tmdb'
 import { getGenreName } from '@/lib/genres'
+import { useWatchlist } from '@/features/watchlist/useWatchlist'
 import { ROUTES } from '@/router/routes'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
 
 function TrendingCard({ movie }) {
   const navigate = useNavigate()
+  const { addMovie, removeMovie, isInWatchlist } = useWatchlist()
+  const inWatchlist = isInWatchlist(movie.id)
+
   const title = movie.title || movie.name || 'Unknown'
   const year = (movie.release_date || movie.first_air_date || '').slice(0, 4)
   const genre = getGenreName(movie.genre_ids)
   const poster = posterUrl(movie.poster_path, 'w342')
+
+  async function handleBookmark(e) {
+    e.stopPropagation()
+    if (inWatchlist) {
+      await removeMovie(movie.id)
+    } else {
+      await addMovie(movie)
+    }
+  }
 
   return (
     <div
@@ -45,10 +65,14 @@ function TrendingCard({ movie }) {
           </button>
           <button
             type="button"
-            className="flex h-[30px] w-[30px] items-center justify-center rounded border border-white/40 text-white hover:bg-white/10"
-            onClick={(e) => e.stopPropagation()}
+            className={`flex h-[30px] w-[30px] items-center justify-center rounded border transition-colors ${
+              inWatchlist
+                ? 'border-primary bg-primary/20 text-primary'
+                : 'border-white/40 text-white hover:bg-white/10'
+            }`}
+            onClick={handleBookmark}
           >
-            <Bookmark size={14} />
+            {inWatchlist ? <BookmarkCheck size={14} /> : <Bookmark size={14} />}
           </button>
         </div>
       </div>
@@ -89,11 +113,23 @@ export default function TrendingRow() {
           View All →
         </span>
       </div>
-      <div className="flex gap-5 overflow-x-auto pb-3 [&::-webkit-scrollbar]:hidden">
-        {isLoading
-          ? Array.from({ length: 6 }).map((_, i) => <TrendingCardSkeleton key={i} />)
-          : movies.map((movie) => <TrendingCard key={movie.id} movie={movie} />)}
-      </div>
+      <Carousel opts={{ align: 'start', dragFree: true }}>
+        <CarouselContent className="-ml-5">
+          {isLoading
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <CarouselItem key={i} className="pl-5 basis-auto">
+                  <TrendingCardSkeleton />
+                </CarouselItem>
+              ))
+            : movies.map((movie) => (
+                <CarouselItem key={movie.id} className="pl-5 basis-auto">
+                  <TrendingCard movie={movie} />
+                </CarouselItem>
+              ))}
+        </CarouselContent>
+        <CarouselPrevious className="hidden sm:flex -left-4 border-surface-border bg-surface-elevated text-text-secondary hover:bg-primary hover:text-white hover:border-primary disabled:opacity-0" />
+        <CarouselNext className="hidden sm:flex -right-4 border-surface-border bg-surface-elevated text-text-secondary hover:bg-primary hover:text-white hover:border-primary disabled:opacity-0" />
+      </Carousel>
     </div>
   )
 }

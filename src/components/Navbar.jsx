@@ -56,7 +56,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="flex h-18.25 items-center justify-between gap-6 bg-surface-elevated px-4 sm:px-8 border-b border-primary/20">
+    <nav className="sticky top-0 z-50 flex h-18.25 items-center justify-between gap-6 bg-surface-elevated px-4 sm:px-8 border-b border-primary/20">
       {/* Logo */}
       <div className="flex items-center gap-4">
         <Link to={ROUTES.HOME} className="flex shrink-0 items-center gap-2">
@@ -66,7 +66,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <div className="flex items-center gap-6">
+        <div className="hidden sm:flex items-center gap-6">
           <NavLink to={ROUTES.SEARCH} className={navLinkClass}>
             Browse
           </NavLink>
@@ -99,7 +99,7 @@ export default function Navbar() {
             {/* Logout */}
             <button
               onClick={handleLogout}
-              className="flex h-9 items-center rounded-full bg-primary px-4 text-sm font-bold text-white transition-colors hover:bg-primary-deep"
+              className="hidden sm:flex h-9 items-center rounded-full bg-primary px-4 text-sm font-bold text-white transition-colors hover:bg-primary-deep"
             >
               Logout
             </button>

@@ -1,18 +1,15 @@
 import { Link } from 'react-router-dom'
-import { Bookmark, BookmarkCheck } from 'lucide-react'
+import { Info, Trash2, Bookmark, BookmarkCheck } from 'lucide-react'
 import { posterUrl } from '@/api/tmdb'
 import { getGenreName } from '@/lib/genres'
-import { useAuthStore } from '@/store/authStore'
-import { useWatchlistStore } from '@/store/watchlistStore'
-import { addToWatchlist, removeFromWatchlist } from '@/api/firebase'
+import { useWatchlist } from '@/features/watchlist/useWatchlist'
 import { ROUTES } from '@/router/routes'
 import { cn } from '@/lib/utils'
+import { Button, buttonVariants } from '@/components/ui/button'
 
 export default function MovieCard({ movie, variant = 'search' }) {
-  const user = useAuthStore((s) => s.user)
-  const addMovie = useWatchlistStore((s) => s.addMovie)
-  const removeMovie = useWatchlistStore((s) => s.removeMovie)
-  const inWatchlist = useWatchlistStore((s) => s.isInWatchlist(movie.id))
+  const { addMovie, removeMovie, isInWatchlist } = useWatchlist()
+  const inWatchlist = isInWatchlist(movie.id)
 
   const title = movie.title || movie.name || 'Unknown'
   const year = (movie.release_date || movie.first_air_date || '').slice(0, 4)
@@ -24,25 +21,19 @@ export default function MovieCard({ movie, variant = 'search' }) {
   async function handleAdd(e) {
     e.preventDefault()
     e.stopPropagation()
-    addMovie(movie)
-    if (user?.uid) {
-      await addToWatchlist(user.uid, movie).catch(console.error)
-    }
+    await addMovie(movie)
   }
 
   async function handleRemove(e) {
     e.preventDefault()
     e.stopPropagation()
-    removeMovie(movie.id)
-    if (user?.uid) {
-      await removeFromWatchlist(user.uid, movie).catch(console.error)
-    }
+    await removeMovie(movie.id)
   }
 
   return (
     <div className="flex flex-col overflow-hidden rounded-primary border border-surface-border bg-surface-card shadow-card transition-all duration-200 hover:-translate-y-1 hover:border-primary hover:shadow-glow">
       {/* Poster */}
-      <Link to={detailPath} className="relative block aspect-[2/3] w-full overflow-hidden">
+      <Link to={detailPath} className="relative block aspect-[3/4] w-full overflow-hidden">
         {poster ? (
           <img
             src={poster}
@@ -63,46 +54,48 @@ export default function MovieCard({ movie, variant = 'search' }) {
       </Link>
 
       {/* Info */}
-      <div className="flex flex-1 flex-col gap-1 p-4">
-        <h3 className="line-clamp-2 text-[15px] font-bold leading-snug text-text-primary">{title}</h3>
-        <p className="text-sm text-text-secondary">
+      <div className="flex flex-1 flex-col gap-0.5 px-3 py-2 sm:px-4 sm:py-3">
+        <h3 className="line-clamp-1 text-[13px] sm:text-[15px] font-bold leading-snug text-text-primary">{title}</h3>
+        <p className="text-xs sm:text-sm text-text-secondary">
           {[year, genre].filter(Boolean).join(' • ')}
         </p>
       </div>
 
       {/* Actions */}
-      <div className="flex gap-2 px-4 pb-4">
+      <div className="flex flex-col sm:flex-row gap-1.5 px-3 pb-3 sm:px-4 sm:pb-4">
         <Link
           to={detailPath}
-          className="flex h-[38px] flex-1 items-center justify-center rounded-primary bg-primary text-sm font-bold text-white transition-colors hover:bg-primary-deep"
+          className={cn(buttonVariants({ size: 'default' }), 'flex-1 shrink min-w-0 w-full')}
         >
+          <Info size={14} />
           Details
         </Link>
 
         {variant === 'search' && (
-          <button
-            type="button"
+          <Button
+            size="default"
             onClick={inWatchlist ? handleRemove : handleAdd}
             className={cn(
-              'flex h-[38px] flex-1 items-center justify-center gap-1 rounded-primary border text-sm font-bold transition-colors',
+              'flex-1 shrink min-w-0 w-full border border-primary dark:border-primary',
               inWatchlist
-                ? 'border-primary bg-primary/10 text-primary-soft hover:bg-primary/20'
-                : 'border-primary text-primary hover:bg-primary/10',
+                ? 'bg-primary/10 dark:bg-primary/10 text-primary-soft hover:bg-primary/20 dark:hover:bg-primary/20'
+                : 'bg-transparent dark:bg-transparent text-primary hover:bg-primary/10 dark:hover:bg-primary/10',
             )}
           >
-            {inWatchlist ? <BookmarkCheck size={13} /> : <Bookmark size={13} />}
-            {inWatchlist ? 'Saved' : '+ Watch'}
-          </button>
+            {inWatchlist ? <BookmarkCheck size={14} /> : <Bookmark size={14} />}
+            {inWatchlist ? 'Saved' : 'Watch'}
+          </Button>
         )}
 
         {variant === 'watchlist' && (
-          <button
-            type="button"
+          <Button
+            size="default"
+            className="flex-1 shrink min-w-0 w-full border border-primary dark:border-primary bg-transparent dark:bg-transparent text-primary hover:bg-primary/10 dark:hover:bg-primary/10"
             onClick={handleRemove}
-            className="flex h-[38px] flex-1 items-center justify-center rounded-primary border border-primary text-sm font-bold text-primary transition-colors hover:bg-primary/10"
           >
-            ✕ Remove
-          </button>
+            <Trash2 size={14} />
+            Remove
+          </Button>
         )}
       </div>
     </div>
