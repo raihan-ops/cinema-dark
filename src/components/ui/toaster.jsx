@@ -4,7 +4,7 @@ function Toaster({ ...props }) {
   return (
     <Sonner
       theme="dark"
-      position="top-right"
+      position="bottom-right"
       className="toaster group"
       toastOptions={{
         classNames: {

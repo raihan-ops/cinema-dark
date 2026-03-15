@@ -22,6 +22,8 @@ function friendlySocialError(code) {
     case 'auth/popup-closed-by-user':
     case 'auth/cancelled-popup-request':
       return ''
+    case 'auth/network-request-failed':
+      return 'Network error. Please check your internet connection.'
     default:
       return 'Social sign-in failed. Please try again.'
   }
@@ -51,10 +53,16 @@ export function useSocialAuth() {
       } catch {
         // watchlist load failure should not block login
       }
+
+      toast.success('Logged in successfully.')
       navigate(ROUTES.SEARCH)
     } catch (err) {
-      const msg = friendlySocialError(err.code)
-      if (msg) toast.error(msg)
+      const msg = friendlySocialError(err?.code)
+      if (msg) {
+        toast.error(msg)
+      } else if (err?.message) {
+        toast.error(err.message)
+      }
     } finally {
       setLoading(null)
     }

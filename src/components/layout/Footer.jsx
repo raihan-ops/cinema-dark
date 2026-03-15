@@ -24,7 +24,7 @@ const socialIcons = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-primary/20 bg-surface-elevated">
+    <footer className="border-t border-primary/20 bg-black/30">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-8">
         {/* Main grid */}
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">

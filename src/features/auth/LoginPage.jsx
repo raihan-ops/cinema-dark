@@ -93,9 +93,16 @@ export default function LoginPage() {
             <Input
               label="Password"
               labelExtra={
-                <span className="cursor-default text-[11px] font-medium text-primary">
+                <Link
+                  to={
+                    fields.email?.trim()
+                      ? `${ROUTES.FORGOT_PASSWORD}?email=${encodeURIComponent(fields.email.trim())}`
+                      : ROUTES.FORGOT_PASSWORD
+                  }
+                  className="text-[11px] font-medium text-primary transition-opacity hover:opacity-90"
+                >
                   Forgot?
-                </span>
+                </Link>
               }
               type={showPassword ? 'text' : 'password'}
               name="password"
@@ -115,7 +122,7 @@ export default function LoginPage() {
             />
 
             {/* Remember me */}
-            <label className="flex cursor-pointer items-center gap-2 text-sm text-text-secondary">
+            {/* <label className="flex cursor-pointer items-center gap-2 text-sm text-text-secondary">
               <input
                 type="checkbox"
                 name="rememberMe"
@@ -124,7 +131,7 @@ export default function LoginPage() {
                 className="h-4 w-4 accent-primary"
               />
               Remember me for 30 days
-            </label>
+            </label> */}
 
             {/* Submit */}
             <Button

@@ -26,6 +26,8 @@ function friendlyError(code) {
       return 'Please enter a valid email address.'
     case 'auth/too-many-requests':
       return 'Too many attempts. Please try again later.'
+    case 'auth/network-request-failed':
+      return 'Network error. Please check your internet connection.'
     default:
       return 'Something went wrong. Please try again.'
   }
@@ -76,9 +78,11 @@ export function useAuthForm(mode) {
       } catch {
         // watchlist load failure should not block login
       }
+
+      toast.success(mode === 'login' ? 'Logged in successfully.' : 'Account created successfully.')
       navigate(ROUTES.SEARCH)
     } catch (err) {
-      toast.error(friendlyError(err.code))
+      toast.error(friendlyError(err?.code) || err?.message || 'Something went wrong. Please try again.')
     } finally {
       setLoading(false)
     }

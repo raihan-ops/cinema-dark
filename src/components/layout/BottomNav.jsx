@@ -11,7 +11,6 @@ const navItems = [
   { label: "Home", icon: Home, to: ROUTES.HOME },
   { label: "Browse", icon: Compass, to: ROUTES.SEARCH },
   { label: "Watchlist", icon: Bookmark, to: ROUTES.WATCHLIST },
-  { label: "Search", icon: Search, to: ROUTES.SEARCH },
 ];
 
 export default function BottomNav() {

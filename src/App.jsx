@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
-import Navbar from '@/components/Navbar'
+import Navbar from '@/components/layout/Navbar'
 import PageTransition from '@/components/PageTransition'
 import ErrorBoundary from '@/components/ErrorBoundary'
+import RouteLoader from '@/components/RouteLoader'
 import { Toaster } from '@/components/ui/toaster'
-import Footer from '@/components/Footer'
-import BottomNav from '@/components/BottomNav'
+import Footer from '@/components/layout/Footer'
+import BottomNav from '@/components/layout/BottomNav'
 import { auth } from '@/lib/firebase'
 import { useAuthStore } from '@/store/authStore'
 import { useWatchlistStore } from '@/store/watchlistStore'
@@ -37,11 +38,7 @@ export default function App() {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!authReady) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-surface-black">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-surface-border border-t-primary" />
-      </div>
-    )
+    return <RouteLoader fullScreen />
   }
 
   return (
@@ -50,7 +47,9 @@ export default function App() {
       <ErrorBoundary>
         <PageTransition>
           <main className="pb-16 sm:pb-0">
-            <Outlet />
+            <Suspense fallback={<RouteLoader />}>
+              <Outlet />
+            </Suspense>
           </main>
         </PageTransition>
       </ErrorBoundary>
