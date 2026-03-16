@@ -7,4 +7,5 @@ export const ROUTES = {
   MOVIE_DETAIL: (id) => `/movie/${id}`,
   MOVIE_DETAIL_PATH: '/movie/:id',
   WATCHLIST: '/watchlist',
+  TRENDING: '/trending',
 }

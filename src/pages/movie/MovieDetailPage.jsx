@@ -10,11 +10,12 @@ import {
   Tv,
   Film,
 } from "lucide-react";
+import { PosterImage } from "@/components/ui/poster-image";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useMovieDetail } from "./useMovieDetail";
 import { backdropUrl, posterUrl } from "@/api/tmdb";
-import { useWatchlist } from "@/features/watchlist/useWatchlist";
-import MovieCard from "@/components/MovieCard";
+import { useWatchlist } from "@/pages/watchlist/useWatchlist";
+import MovieCard from "@/components/features/MovieCard";
 import { DetailSkeleton } from "@/components/skeletons";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -39,17 +40,13 @@ function CastCard({ person }) {
   return (
     <div className="w-27.5 shrink-0">
       <div className="h-37.5 w-full overflow-hidden rounded-primary bg-surface-card">
-        {photo ? (
-          <img
-            src={photo}
-            alt={person.name}
-            className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center text-xs text-text-muted">
-            No Photo
-          </div>
-        )}
+        <PosterImage
+          src={photo}
+          alt={person.name}
+          className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+          iconSize={20}
+          showLabel={false}
+        />
       </div>
       <p className="mt-2 line-clamp-2 text-xs font-bold text-text-primary">
         {person.name}
@@ -156,7 +153,7 @@ export default function MovieDetailPage() {
   }
 
   function handleBack() {
-    if (location.key !== 'default') {
+    if (location.key !== "default") {
       navigate(-1);
       return;
     }
@@ -174,15 +171,13 @@ export default function MovieDetailPage() {
     >
       {/* ── Backdrop ───────────────────────────────────────────────────────── */}
       <div className="relative aspect-video w-full max-h-[600px] overflow-hidden">
-        {backdrop ? (
-          <img
-            src={backdrop}
-            alt={title}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        ) : (
-          <div className="h-full w-full bg-surface-elevated" />
-        )}
+        <PosterImage
+          src={backdrop}
+          alt={title}
+          className="absolute inset-0 h-full w-full object-cover"
+          fallbackClassName="bg-surface-elevated"
+          iconSize={52}
+        />
         {/* gradient overlays */}
         <div className="absolute inset-0 bg-linear-to-t from-surface-black via-surface-black/50 to-transparent" />
         <div className="absolute inset-0 bg-linear-to-r from-surface-black/70 to-transparent" />
@@ -191,7 +186,7 @@ export default function MovieDetailPage() {
       {/* Back button — outside overflow-hidden, z-50 so it's above the -mt-50 content on mobile */}
       <button
         onClick={handleBack}
-        className="absolute left-4 top-5 z-50 flex items-center gap-2 rounded-primary bg-black/40 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-black/60 sm:left-8"
+        className="cursor-pointer absolute left-4 top-5 z-50 flex items-center gap-2 rounded-primary bg-black/40 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-black/60 sm:left-8"
       >
         <ArrowLeft size={15} />
       </button>
@@ -208,17 +203,12 @@ export default function MovieDetailPage() {
             className="mx-auto w-50 shrink-0 md:mx-0 md:w-60"
           >
             <div className=" aspect-2/3 w-full overflow-hidden rounded-primary border border-surface-border shadow-card">
-              {poster ? (
-                <img
-                  src={poster}
-                  alt={title}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center bg-surface-card text-sm text-text-secondary">
-                  No Image
-                </div>
-              )}
+              <PosterImage
+                src={poster}
+                alt={title}
+                className="h-full w-full object-cover"
+                iconSize={44}
+              />
             </div>
           </motion.div>
 
@@ -415,7 +405,7 @@ export default function MovieDetailPage() {
             className="mt-12"
           >
             <h2 className="mb-5 text-xl font-bold text-text-primary">Cast</h2>
-            <Carousel opts={{ align: 'start', dragFree: true }}>
+            <Carousel opts={{ align: "start", dragFree: true }}>
               <CarouselContent className="-ml-4">
                 {cast.map((person) => (
                   <CarouselItem
@@ -442,7 +432,7 @@ export default function MovieDetailPage() {
             className="mt-12 pb-16"
           >
             <h2 className="mb-6 text-xl font-bold text-text-primary">
-              Similar Titles
+              Titles You Might Like On CinemaDark
             </h2>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
               {similar.map((movie) => (

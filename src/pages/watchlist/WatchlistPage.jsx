@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion'
 import { Bookmark } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useScrollToTop } from '@/hooks/useScrollToTop'
 import { useWatchlist } from './useWatchlist'
-import MovieCard from '@/components/MovieCard'
+import MovieCard from '@/components/features/MovieCard'
 import { ROUTES } from '@/router/routes'
 
 const container = {
@@ -16,6 +17,7 @@ const item = {
 }
 
 export default function WatchlistPage() {
+  useScrollToTop()
   const { movies } = useWatchlist()
 
   return (

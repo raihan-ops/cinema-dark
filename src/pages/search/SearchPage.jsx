@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Search } from 'lucide-react'
+import { useScrollToTop } from '@/hooks/useScrollToTop'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useMovieSearch } from './useMovieSearch'
-import TrendingRow from '@/components/TrendingRow'
-import MovieCard from '@/components/MovieCard'
+import TrendingRow from '@/components/features/TrendingRow'
+import MovieCard from '@/components/features/MovieCard'
 import { CardSkeleton } from '@/components/skeletons'
 import { cn } from '@/lib/utils'
 
@@ -14,6 +15,7 @@ const FILTERS = [
 ]
 
 export default function SearchPage() {
+  useScrollToTop()
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState('all')
   const debouncedQuery = useDebounce(query, 300)

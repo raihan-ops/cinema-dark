@@ -7,6 +7,7 @@ import { useAuthStore } from "@/store/authStore";
 import { useWatchlistStore } from "@/store/watchlistStore";
 import { ROUTES } from "@/router/routes";
 import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
 
 function UserAvatar({ user }) {
   if (user?.photoURL) {
@@ -59,7 +60,7 @@ export default function Navbar() {
     <nav className="sticky top-0 z-1000 flex h-18.25 items-center justify-between gap-6 bg-surface-elevated px-4 sm:px-8 border-b border-primary/20">
       {/* Logo */}
       <div className="flex items-center gap-4">
-        <Link to={ROUTES.HOME} className="flex shrink-0 items-center gap-2">
+        <Link to={ROUTES.SEARCH} className="flex shrink-0 items-center gap-2">
           <Film size={22} className="text-primary" />
           <span className="text-lg font-extrabold tracking-tight text-text-primary sm:text-xl">
             CinemaDark
@@ -83,7 +84,7 @@ export default function Navbar() {
           {/* Right controls */}
           <div className="flex items-center gap-3">
             {/* Search input */}
-            <form onSubmit={handleSearch} className="hidden sm:flex">
+            {/* <form onSubmit={handleSearch} className="hidden sm:flex">
               <div className="flex h-9 items-center gap-2 rounded-full bg-surface-input px-3">
                 <Search size={15} className="shrink-0 text-text-secondary" />
                 <input
@@ -94,15 +95,15 @@ export default function Navbar() {
                   className="w-40 bg-transparent text-sm text-white outline-none placeholder:text-text-muted"
                 />
               </div>
-            </form>
+            </form> */}
 
             {/* Logout */}
-            <button
+            <Button
               onClick={handleLogout}
               className="hidden sm:flex h-9 items-center rounded-full bg-primary px-4 text-sm font-bold text-white transition-colors hover:bg-primary-deep"
             >
               Logout
-            </button>
+            </Button>
 
             {/* Avatar */}
             <UserAvatar user={user} />

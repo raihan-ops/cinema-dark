@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import { Play, Bookmark, BookmarkCheck } from 'lucide-react'
 import { posterUrl } from '@/api/tmdb'
+import { PosterImage } from '@/components/ui/poster-image'
 import { getGenreName } from '@/lib/genres'
-import { useWatchlist } from '@/features/watchlist/useWatchlist'
+import { useWatchlist } from '@/pages/watchlist/useWatchlist'
 import { ROUTES } from '@/router/routes'
 import { Button } from '@/components/ui/button'
 
@@ -31,17 +32,12 @@ export function TrendingCard({ movie }) {
       onClick={() => navigate(ROUTES.MOVIE_DETAIL(movie.id))}
     >
       <div className="relative h-[330px] w-full overflow-hidden rounded-primary">
-        {poster ? (
-          <img
-            src={poster}
-            alt={title}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center rounded-primary bg-surface-card text-sm text-text-secondary">
-            No Image
-          </div>
-        )}
+        <PosterImage
+          src={poster}
+          alt={title}
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          iconSize={40}
+        />
 
         <div className="absolute inset-0 flex items-center justify-center gap-3 rounded-primary bg-black/60 opacity-100 transition-opacity duration-200 pointer-events-auto sm:opacity-0 sm:pointer-events-none sm:group-hover:opacity-100 sm:group-hover:pointer-events-auto sm:group-focus-within:opacity-100 sm:group-focus-within:pointer-events-auto">
           <Button

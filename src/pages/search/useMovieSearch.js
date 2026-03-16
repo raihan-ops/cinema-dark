@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { searchMovies, getTrending } from '@/api/tmdb'
 
 export function useMovieSearch(query) {
@@ -14,9 +14,12 @@ export function useMovieSearch(query) {
 }
 
 export function useTrending() {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: ['movies', 'trending'],
-    queryFn: () => getTrending('week'),
+    queryFn: ({ pageParam = 1 }) => getTrending('week', pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined,
     staleTime: 1000 * 60 * 30,
   })
 }

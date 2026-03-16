@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useScrollToTop } from '@/hooks/useScrollToTop'
 import { Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react'
 import { useAuthForm } from './useAuthForm'
 import { useSocialAuth } from './useSocialAuth'
@@ -58,6 +59,7 @@ const socialProviders = [
 ]
 
 export default function SignupPage() {
+  useScrollToTop()
   const { fields, handleChange, handleSubmit, loading } = useAuthForm('signup')
   const { signInWith, loading: socialLoading } = useSocialAuth()
   const [showPassword, setShowPassword] = useState(false)

@@ -1,8 +1,9 @@
 import { Link, useLocation } from 'react-router-dom'
 import { Info, Trash2, Bookmark, BookmarkCheck } from 'lucide-react'
 import { posterUrl } from '@/api/tmdb'
+import { PosterImage } from '@/components/ui/poster-image'
 import { getGenreName } from '@/lib/genres'
-import { useWatchlist } from '@/features/watchlist/useWatchlist'
+import { useWatchlist } from '@/pages/watchlist/useWatchlist'
 import { ROUTES } from '@/router/routes'
 import { cn } from '@/lib/utils'
 import { Button, buttonVariants } from '@/components/ui/button'
@@ -32,24 +33,19 @@ export default function MovieCard({ movie, variant = 'search' }) {
   }
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-primary border border-surface-border bg-surface-card shadow-card transition-all duration-200 hover:border-primary hover:shadow-glow">
+    <div className="group relative flex flex-col overflow-hidden rounded-primary border border-surface-border bg-surface-card shadow-card transform-gpu transition-all duration-300 ease-out hover:scale-[1.03] hover:border-primary hover:shadow-glow">
       {/* Poster */}
       <Link
         to={detailPath}
         state={{ from: `${location.pathname}${location.search}` }}
         className="relative block aspect-[3/4] w-full overflow-hidden"
       >
-        {poster ? (
-          <img
-            src={poster}
-            alt={title}
-            className="h-full w-full object-cover transition-transform duration-300"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center bg-surface-card text-sm text-text-secondary">
-            No Image
-          </div>
-        )}
+        <PosterImage
+          src={poster}
+          alt={title}
+          className="h-full w-full object-cover transition-transform duration-300"
+          iconSize={40}
+        />
         {/* Rating badge */}
         {rating && (
           <div className="absolute bottom-2 right-2 flex h-6 items-center rounded bg-primary px-2 text-xs font-bold text-white">

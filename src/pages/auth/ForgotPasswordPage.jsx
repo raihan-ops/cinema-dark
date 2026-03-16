@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { useScrollToTop } from '@/hooks/useScrollToTop'
 import { ArrowLeft, Loader2, Mail } from 'lucide-react'
 import { sendPasswordResetEmail } from 'firebase/auth'
 import { toast } from 'sonner'
@@ -22,6 +23,7 @@ function friendlyResetError(code) {
 }
 
 export default function ForgotPasswordPage() {
+  useScrollToTop()
   const [searchParams] = useSearchParams()
   const initialEmail = searchParams.get('email') || ''
   const [email, setEmail] = useState(initialEmail)

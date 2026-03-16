@@ -2,6 +2,7 @@ import { toast } from 'sonner'
 import { useWatchlistStore } from '@/store/watchlistStore'
 import { useAuthStore } from '@/store/authStore'
 import { addToWatchlist, removeFromWatchlist } from '@/api/firebase'
+import { useUiStore } from '@/store/uiStore'
 
 export function useWatchlist() {
   const movies = useWatchlistStore((s) => s.movies)
@@ -9,8 +10,13 @@ export function useWatchlist() {
   const _removeMovie = useWatchlistStore((s) => s.removeMovie)
   const isInWatchlist = useWatchlistStore((s) => s.isInWatchlist)
   const user = useAuthStore((s) => s.user)
+  const openAuthPrompt = useUiStore((s) => s.openAuthPrompt)
 
   async function addMovie(movie) {
+    if (!user) {
+      openAuthPrompt()
+      return
+    }
     _addMovie(movie)
     toast.success('Added to Watchlist', {
       description: movie.title || movie.name,

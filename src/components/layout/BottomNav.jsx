@@ -8,7 +8,7 @@ import { ROUTES } from "@/router/routes";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { label: "Home", icon: Home, to: ROUTES.HOME },
+  // { label: "Home", icon: Home, to: ROUTES.HOME },
   { label: "Browse", icon: Compass, to: ROUTES.SEARCH },
   { label: "Watchlist", icon: Bookmark, to: ROUTES.WATCHLIST },
 ];

@@ -16,8 +16,8 @@ export function searchMovies(query, page = 1) {
   return tmdbFetch(ENDPOINTS.SEARCH_MULTI, { query, page })
 }
 
-export function getTrending(timeWindow = 'week') {
-  return tmdbFetch(ENDPOINTS.TRENDING_ALL(timeWindow))
+export function getTrending(timeWindow = 'week', page = 1) {
+  return tmdbFetch(ENDPOINTS.TRENDING_ALL(timeWindow), { page })
 }
 
 export function getMovieDetail(id) {

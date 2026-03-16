@@ -6,6 +6,7 @@ import PageTransition from '@/components/PageTransition'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import RouteLoader from '@/components/RouteLoader'
 import { Toaster } from '@/components/ui/toaster'
+import { AuthPromptDialog } from '@/components/ui/auth-prompt-dialog'
 import Footer from '@/components/layout/Footer'
 import BottomNav from '@/components/layout/BottomNav'
 import { auth } from '@/lib/firebase'
@@ -56,6 +57,7 @@ export default function App() {
       <Footer />
       <BottomNav />
       <Toaster />
+      <AuthPromptDialog />
     </div>
   )
 }
