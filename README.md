@@ -2,7 +2,7 @@
 
 A fast, responsive movie watchlist web app built with React. Search for movies and TV shows, view detailed info, and save titles to a personal watchlist — synced to the cloud per user.
 
-**Demo Video:** [Watch on Google Drive](#) ← _replace this link with your recording_
+**Live Demo:** [cinema-dark.vercel.app](https://cinema-dark.vercel.app/search) &nbsp;|&nbsp; **GitHub:** [raihan-ops/cinema-dark](https://github.com/raihan-ops/cinema-dark) &nbsp;|&nbsp; **Demo Video:** [Watch on Google Drive](https://drive.google.com/file/d/1bM4K8FzBnWyT9sOUjOP3HkQnvRt73Qom/view?usp=drive_link)
 
 ---
 
