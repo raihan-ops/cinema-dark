@@ -85,7 +85,7 @@ export default function MovieCard({ movie, variant = 'search' }) {
             )}
           >
             {inWatchlist ? <BookmarkCheck size={14} /> : <Bookmark size={14} />}
-            {inWatchlist ? 'Saved' : 'Watch'}
+            {inWatchlist ? 'Saved' : '+ Watchlist'}
           </Button>
         )}
 

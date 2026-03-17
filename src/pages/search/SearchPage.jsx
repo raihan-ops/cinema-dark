@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Search } from 'lucide-react'
+import { useSearchParams } from 'react-router-dom'
+import { Search, X } from 'lucide-react'
 import { useScrollToTop } from '@/hooks/useScrollToTop'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useMovieSearch } from './useMovieSearch'
@@ -16,8 +16,10 @@ const FILTERS = [
 
 export default function SearchPage() {
   useScrollToTop()
-  const [query, setQuery] = useState('')
-  const [filter, setFilter] = useState('all')
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const query = searchParams.get('q') ?? ''
+  const filter = searchParams.get('filter') ?? 'all'
   const debouncedQuery = useDebounce(query, 300)
 
   const {
@@ -35,6 +37,43 @@ export default function SearchPage() {
       ? allResults.filter((m) => m.media_type !== 'person')
       : allResults.filter((m) => m.media_type === filter)
 
+  function handleInputChange(e) {
+    const value = e.target.value
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev)
+        if (value) {
+          next.set('q', value)
+          next.delete('filter')
+        } else {
+          next.delete('q')
+          next.delete('filter')
+        }
+        return next
+      },
+      { replace: true },
+    )
+  }
+
+  function handleFilterChange(value) {
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev)
+        if (value === 'all') {
+          next.delete('filter')
+        } else {
+          next.set('filter', value)
+        }
+        return next
+      },
+      { replace: true },
+    )
+  }
+
+  function handleClear() {
+    setSearchParams({}, { replace: true })
+  }
+
   return (
     <div className="min-h-screen bg-surface-elevated">
       <div className="mx-auto max-w-[1280px] px-4 py-12 sm:px-8">
@@ -49,13 +88,19 @@ export default function SearchPage() {
           <input
             type="text"
             value={query}
-            onChange={(e) => {
-              setQuery(e.target.value)
-              setFilter('all')
-            }}
+            onChange={handleInputChange}
             placeholder="Search movies, actors, or genres"
             className="flex-1 bg-transparent text-base font-medium text-white outline-none placeholder:text-text-secondary sm:text-lg"
           />
+          {query && (
+            <button
+              onClick={handleClear}
+              className="cursor-pointer shrink-0 rounded-full p-1 text-text-secondary transition-colors hover:text-white"
+              aria-label="Clear search"
+            >
+              <X size={18} />
+            </button>
+          )}
         </div>
 
         {/* Content */}
@@ -70,7 +115,7 @@ export default function SearchPage() {
                 {FILTERS.map((f) => (
                   <button
                     key={f.value}
-                    onClick={() => setFilter(f.value)}
+                    onClick={() => handleFilterChange(f.value)}
                     className={cn(
                       'rounded-full px-4 py-1.5 text-xs font-bold transition-colors',
                       filter === f.value
